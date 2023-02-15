@@ -6,22 +6,22 @@ const hoursSpan = document.querySelector('[data-hours]');
 const minutesSpan = document.querySelector('[data-minutes]');
 const secondsSpan = document.querySelector('[data-seconds]');
 
-const dateEnd = new Date('2022-02-11 12:00:00.000');
+const dateEnd = new Date('2023-02-15 15:02:00.000');
 const timerID = setInterval(onTimerTick, 1000);
 
 function onTimerTick() {
-  const datetime = new Date();
-  const diffTime = calculateDiffTime(datetime);
-  showDiffTime(diffTime);
+  const diffTime = calculateDTime(dateEnd - Date.now());
+  // const diffTime = convertMs(dateEnd - Date.now());
+  showTime(diffTime);
 }
 
-function calculateDiffTime(datetime) {
-  const dMsFull = Math.abs(dateEnd - datetime);
-  //   const dMseconds = Math.floor(dMsFull % 1000);
-  const dSeconds = Math.floor((dMsFull / 1000) % 60);
-  const dMinutes = Math.floor((dMsFull / (1000 * 60)) % 60);
-  const dHours = Math.floor((dMsFull / (1000 * 60 * 60)) % 24);
-  const dDays = Math.floor(dMsFull / (1000 * 60 * 60 * 24));
+function calculateDTime(dms) {
+  const dSeconds = Math.floor((dms / 1000) % 60);
+  const dMinutes = Math.floor((dms / (1000 * 60)) % 60);
+  const dHours = Math.floor((dms / (1000 * 60 * 60)) % 24);
+  const dDays = Math.floor(dms / (1000 * 60 * 60 * 24));
+
+  if (dms <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
 
   return {
     days: dDays,
@@ -31,9 +31,28 @@ function calculateDiffTime(datetime) {
   };
 }
 
-function showDiffTime({ days, hours, minutes, seconds }) {
+function convertMs(ms) {
+  // Number of milliseconds per unit of time
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  // Remaining days
+  const days = Math.floor(ms / day);
+  // Remaining hours
+  const hours = Math.floor((ms % day) / hour);
+  // Remaining minutes
+  const minutes = Math.floor(((ms % day) % hour) / minute);
+  // Remaining seconds
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+
+  return { days, hours, minutes, seconds };
+}
+
+function showTime({ days, hours, minutes, seconds }) {
   daysSpan.textContent = days;
-  hoursSpan.textContent = hours;
-  minutesSpan.textContent = minutes;
-  secondsSpan.textContent = seconds;
+  hoursSpan.textContent = String(hours).padStart(2, '0');
+  minutesSpan.textContent = String(minutes).padStart(2, '0');
+  secondsSpan.textContent = String(seconds).padStart(2, '0');
 }
