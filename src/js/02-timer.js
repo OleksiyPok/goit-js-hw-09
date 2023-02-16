@@ -66,7 +66,7 @@ function onClickStart() {
   }
 
   function showTime({ days, hours, minutes, seconds }) {
-    daysSpan.textContent = days;
+    daysSpan.textContent = String(days).padStart(2, '0');
     hoursSpan.textContent = String(hours).padStart(2, '0');
     minutesSpan.textContent = String(minutes).padStart(2, '0');
     secondsSpan.textContent = String(seconds).padStart(2, '0');
