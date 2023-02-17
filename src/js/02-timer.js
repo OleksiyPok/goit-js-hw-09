@@ -1,18 +1,20 @@
-// Описаний в документації
 import flatpickr from 'flatpickr';
-// Додатковий імпорт стилів
 import 'flatpickr/dist/flatpickr.min.css';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import './../css/02-timer.css';
 
 const datetime = document.querySelector('#datetime-picker');
-const startBtn = document.querySelector('button');
-
+const startBtn = document.querySelector('[data-start]');
+const timer = document.querySelector('.timer');
 const daysSpan = document.querySelector('[data-days]');
 const hoursSpan = document.querySelector('[data-hours]');
 const minutesSpan = document.querySelector('[data-minutes]');
 const secondsSpan = document.querySelector('[data-seconds]');
+const text = '<p class="text">Left:</p>';
+timer.insertAdjacentHTML('beforebegin', text);
 
 const options = {
-  minDate: 'today',
+  // minDate: 'today',
   enableTime: true,
   time_24hr: true,
   defaultDate: Date.now(),
@@ -29,7 +31,9 @@ const flatpickrObj = flatpickr(datetime, options);
 
 function checkDate(selectedDate) {
   if (selectedDate <= Date.now()) {
-    alert('Please choose a date in the future');
+    // alert('Please choose a date in the future');
+    startBtn.disabled = true;
+    Notify.failure('Please choose a date in the future');
     return;
   }
   startBtn.disabled = false;
@@ -41,11 +45,16 @@ function onClickStart() {
     clearInterval(timerID);
     return;
   }
+
   startBtn.disabled = true;
   const timerID = setInterval(onTimerTick, 1000);
 
   function onTimerTick() {
-    const diffTime = calculateDTime(dateEnd - Date.now());
+    timerCycle(dateEnd);
+  }
+
+  function timerCycle(date) {
+    const diffTime = calculateDTime(date - Date.now());
     showTime(diffTime);
   }
 
