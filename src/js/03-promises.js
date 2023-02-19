@@ -10,7 +10,7 @@ function onSubmit(e) {
     elements: { delay, step, amount },
   } = e.currentTarget;
 
-  currentDelay = Number(delay.value);
+  let currentDelay = Number(delay.value);
 
   for (let i = 1; i <= Number(amount.value); i += 1) {
     createPromise(i, currentDelay)

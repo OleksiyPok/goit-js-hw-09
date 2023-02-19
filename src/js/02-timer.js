@@ -14,7 +14,7 @@ const text = '<p class="text">Left:</p>';
 timer.insertAdjacentHTML('beforebegin', text);
 
 const options = {
-  // minDate: 'today',
+  minDate: 'today',
   enableTime: true,
   time_24hr: true,
   defaultDate: Date.now(),
