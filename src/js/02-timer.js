@@ -40,13 +40,10 @@ function checkDate(selectedDate) {
 
 function onClickStart() {
   const dateEnd = flatpickrObj.selectedDates[0].getTime();
-  if (dateEnd <= Date.now()) {
-    clearInterval(timerID);
-    return;
-  }
 
   startBtn.disabled = true;
-  const timerID = setInterval(onTimerTick, 1000);
+
+  setInterval(onTimerTick, 1000);
 
   function onTimerTick() {
     timerCycle(dateEnd);
