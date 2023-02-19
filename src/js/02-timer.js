@@ -31,7 +31,6 @@ const flatpickrObj = flatpickr(datetime, options);
 
 function checkDate(selectedDate) {
   if (selectedDate <= Date.now()) {
-    // alert('Please choose a date in the future');
     startBtn.disabled = true;
     Notify.failure('Please choose a date in the future');
     return;
